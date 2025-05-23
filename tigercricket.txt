@@ -1,0 +1,54 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class TigerCricketScoreGUI implements ActionListener {
+    private JTextField[] nameFields;
+    private JTextField[] scoreFields;
+    private JLabel resultLabel;
+
+    public TigerCricketScoreGUI() {
+        JFrame frame = new JFrame("Tiger Cricket Score");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(400, 300);
+        frame.setLayout(new BorderLayout());
+
+        JPanel inputPanel = new JPanel(new GridLayout(0, 2));
+        final int PLAYERS = 11;
+        nameFields = new JTextField[PLAYERS];
+        scoreFields = new JTextField[PLAYERS];
+        for (int i = 0; i < PLAYERS; i++) {
+            inputPanel.add(new JLabel("Enter player " + (i + 1) + " name:"));
+            nameFields[i] = new JTextField();
+            inputPanel.add(nameFields[i]);
+            inputPanel.add(new JLabel("Enter player " + (i + 1) + " score:"));
+            scoreFields[i] = new JTextField();
+            inputPanel.add(scoreFields[i]);
+        }
+        frame.add(inputPanel, BorderLayout.CENTER);
+
+        JButton calculateButton = new JButton("Calculate");
+        calculateButton.addActionListener(this);
+        frame.add(calculateButton, BorderLayout.SOUTH);
+
+        resultLabel = new JLabel("", SwingConstants.CENTER);
+        frame.add(resultLabel, BorderLayout.NORTH);
+
+        frame.setVisible(true);
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        int highScoreIdx = 0;
+        for (int i = 1; i < scoreFields.length; i++) {
+            if (Integer.parseInt(scoreFields[i].getText()) > Integer.parseInt(scoreFields[highScoreIdx].getText())) {
+                highScoreIdx = i;
+            }
+        }
+
+        resultLabel.setText("Highest Scorer: " + nameFields[highScoreIdx].getText() + " - " + scoreFields[highScoreIdx].getText());
+    }
+
+    public static void main(String[] args) {
+        new TigerCricketScoreGUI();
+    }
+}
